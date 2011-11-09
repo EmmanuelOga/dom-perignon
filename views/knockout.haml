@@ -1,0 +1,55 @@
+.container_12
+  .grid_12.align_center
+    %h1 TODO
+    %small (Knockout)
+  .clear
+
+  .grid_3
+    &nbsp;
+  .grid_6.description
+    %div
+      %form{:"data-bind" => "submit: addTodo"}
+        %input{:id => "newTodo", :name => "todoText", :placeholder => "enter your todo here", :size => "35", :type => "text", :required => "required"}/
+        %input{:type => "submit", :value => "add"}/
+        %br/
+        %span{:"data-bind" => "text: remaining"}
+        remaining
+        %input{:"data-bind" => "click: removeDone", :type => "button", :value => "clean up"}/
+
+      %ul{"data-bind" => "template: {name:'todoTemplate', foreach: todos}"}
+
+  .clear
+
+%script#todoTemplate{:type => "text/x-jquery-tmpl"}
+  %li
+    %input{:"data-bind" => "attr: { 'id'  : id }, checked: done ", :type => "checkbox"}/
+    %label{:"data-bind" => "attr: { 'for' : id }, html: name, css: {'done-true':done}"}
+
+:javascript
+  var Todo = function(name) {
+    this.id = genID();
+    this.name = name || "";
+    this.done = ko.observable(false);
+    this.toggle = function() { return this.done(!this.done); }
+  }
+
+  var viewModel = {
+    todos: ko.observableArray([
+      new Todo('learn knockout'),
+      new Todo('build an angular app')
+    ]),
+
+    addTodo: function() {
+      this.todos.push(new Todo($("#newTodo").val()));
+    },
+
+    removeDone: function() {
+      this.todos.remove(function(todo){ console.log(todo.done()) ; return todo.done(); });
+    }
+  };
+
+  viewModel.remaining = ko.dependentObservable(function() {
+    return _(viewModel.todos()).select(function(elem) { return !elem.done(); }).length;
+  }, viewModel);
+
+  ko.applyBindings(viewModel);

@@ -1,0 +1,73 @@
+.container_12
+  .grid_12.align_center
+    %h1 TODO
+    %small (jQuery)
+  .clear
+
+  .grid_3
+    &nbsp;
+  .grid_6.description
+    %div
+      %form
+        %input{:id => "newTodo", :name => "todoText", :placeholder => "enter your todo here", :size => "35", :type => "text", :required => "required"}/
+        %input{:type => "submit", :value => "add"}/
+        %br/
+        %span{:id => "remaining"}
+        remaining
+        %input{:id => "add", :type => "button", :value => "clean up"}/
+
+      %ul{:id => "todoList"}
+
+  .clear
+
+:javascript
+  $(function(){
+
+    var Todo = function(name) {
+      this.id = genID();
+      this.name = name || "";
+      this.done = false;
+      this.toggle = function() { return this.done(!this.done); }
+      this.html = function() {
+        var $li = $("<li>");
+        $li.append($("<input id='"+this.id+"' type='checkbox' />"));
+        $li.append($("<label for='"+this.id+"' class='"+ (this.done ? 'done-true' : '') +"' >"+this.name+"</label>"));
+        return $li;
+      }
+    }
+
+    var $list = $("#todoList");
+    var $remaining = $("#remaining");
+
+    var model = {
+      todos: [
+        new Todo('learn knockout'),
+        new Todo('build an angular app')
+      ],
+
+      addTodo: function() {
+        this.todos.push(new Todo($("#newTodo").val()));
+      },
+
+      removeDone: function() {
+        alert("TODO!!!");
+      },
+
+      update: function(){
+        $list.html("");
+        $remaining.html(model.todos.length);
+        _(this.todos).each(function(elem){
+          $list.append(elem.html());
+        });
+      }
+    };
+
+    model.update();
+
+    $("form").submit(function(ev){
+      ev.preventDefault();
+      model.addTodo();
+      model.update();
+    });
+
+  });

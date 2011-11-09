@@ -1,0 +1,50 @@
+.container_12
+  .grid_12.align_center
+    %h1 TODOS
+    %small (Angular)
+  .clear
+
+  .grid_3
+    &nbsp;
+  .grid_6.description
+    %div{"ng:controller" => "TodoCtrl"}
+      %form{"ng:submit" => "addTodo()"}
+        %input{:name => "todoText", :placeholder => "enter your todo here", :size => "35", :type => "text", :required => "required"}/
+        %input{:type => "submit", :value => "add"}/
+        %br/
+        %span {{remaining()}} remaining
+        %input{"ng:click" => "removeDone()", :type => "button", :value => "clean up"}/
+      %ul
+        %li{"ng:repeat" => "todo in todos"}
+          %input{:name => "todo.done", :type => "checkbox", :id => "{{todo.id}}"}/
+          %label{:for => "{{todo.id}}", "ng:class" => "'done-' + todo.done"} {{todo.text}}
+
+  .clear
+
+:javascript
+  function TodoCtrl() {
+    var scope = this;
+    scope.todos = [
+      {text:'learn angular', done:true, id: genID() },
+      {text:'build an angular app', done:false, id: genID() }
+    ];
+
+    scope.addTodo = function() {
+      scope.todos.push({text:scope.todoText, done:false, id: genID() });
+      scope.todoText = '';
+    };
+
+    scope.remaining = function(){
+      return angular.Array.count(scope.todos, function(todo){
+        return !todo.done;
+      });
+    };
+
+    scope.removeDone = function() {
+      var oldTodos = scope.todos;
+      scope.todos = [];
+      angular.forEach(oldTodos, function(todo) {
+        if (!todo.done) scope.todos.push(todo);
+      });
+    };
+  }

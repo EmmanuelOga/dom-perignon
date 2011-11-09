@@ -1,0 +1,57 @@
+!!!
+%html{:lang => "en", 'xmlns:ng' => "http://angularjs.org"}
+  = %(<script src="/javascripts/angular-0.9.18.min.js" ng:autobind></script>) if @use_angular
+  %head
+    %title DOM Perignon
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "ie=edge", "http-equiv" => "x-ua-compatible"}/
+    %meta{:content => "Emmanuel Oga", :name => "author"}/
+    %meta{:content => "Licensed under GPL and MIT.", :name => "copyright"}/
+    %link{:href => "/css/master.css", :rel => "stylesheet"}/
+    %link{:href => "/fonts/fonts.css", :rel => "stylesheet"}/
+    %script{:src => "/javascripts/jquery-min.js"}
+    %script{:src => "/javascripts/jquery.formalize.min.js"}
+    %script{:src => "/javascripts/underscore-min.js"}
+
+    %script{:src => "/javascripts/jquery.tmpl.js"}
+    %script{:src => "/javascripts/knockout-1.3.0beta.js"}
+    %script{:src => "/javascripts/master.js"}
+
+    :javascript
+      var ADAPT_CONFIG = {
+        path: '/adapt/css/',
+        dynamic: false,
+        range: ['0px to 980px = 720.css', '980px = 960.css' ]
+      };
+
+    %script{:src => "/adapt/js/adapt.js"}
+
+  %body
+    %h4.logo_small.align_center
+      %a{:href => "/"}= "/"
+      \ |
+      %a{:href => "/jquery"}= "J"
+      \ |
+      %a{:href => "/knockout"}= "K"
+      \ |
+      %a{:href => "/angular"}= "A"
+    .logo_bottom
+    .clear
+
+    = yield
+
+    .footer.align_right
+      %small
+        %a{:href => "http://faye.jcoglan.com/"} faye.jcoglan.com/
+        \ | 
+        %a{:href => "http://angularjs.org/"} angularjs.org
+        \ | 
+        %a{:href => "http://thenounproject.com/"} thenounproject.com
+        \ | 
+        %a{:href => "http://formalize.me/"} formalize.me
+        \ | 
+        %a{:href => "http://adapt.960.gs/"} adapt.960.gs
+        \ | 
+        %a{:href => "http://prlloyd.com/e/226"} prlloyd.com
+        \ | 
+        %a{:href => "http://jackietran.deviantart.com/"} jackietran
